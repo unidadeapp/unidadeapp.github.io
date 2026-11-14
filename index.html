@@ -26,17 +26,18 @@
   header p { margin:6px 0 0; color:var(--cinza); max-width:60ch; }
   .rot { font-size:12.5px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; color:var(--cinza); margin:0 0 10px; }
   /* mapa das versões */
-  .mapa { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  .fam { background:var(--sup); border:1.5px solid var(--linha); border-radius:16px; padding:16px 18px; min-width:0; }
-  .fam h2 { font-size:18px; color:var(--verde); display:flex; align-items:center; gap:10px; }
-  .fam h2 .lg { width:30px; height:30px; } .fam h2 .lg svg { width:100%; height:100%; display:block; }
-  .ramo { list-style:none; margin:10px 0 0; padding:0 0 0 14px; border-left:2px solid var(--linha); display:flex; flex-direction:column; gap:7px; }
-  .ramo li { display:block; }
-  .ramo li .chip { margin-right:6px; }
+  .mapa { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .fam { background:var(--sup); border:1.5px solid var(--linha); border-radius:12px; padding:12px 16px; min-width:0; }
+  .fam h2 { font-size:17px; color:var(--verde); display:flex; align-items:center; gap:10px; }
+  .fam h2 .lg { width:28px; height:28px; } .fam h2 .lg svg { width:100%; height:100%; display:block; }
+  .fam > p { margin:4px 0 0; font-size:13.5px; color:var(--cinza); }
+  .ramo { list-style:none; margin:8px 0 0; padding:0 0 0 14px; border-left:2px solid var(--linha); display:flex; flex-direction:column; gap:6px; font-size:14px; }
   .ramo li::before { content:""; display:inline-block; vertical-align:middle; width:10px; height:2px; background:var(--linha); margin:0 6px 0 -14px; }
+  .ramo li small { display:block; color:var(--cinza); font-size:12.5px; margin-top:1px; }
+  .ramo.sub { margin:4px 0 2px 6px; font-size:13px; }
   .chip { font-size:12px; font-weight:700; border-radius:20px; padding:2px 9px; border:1.5px solid; }
   .chip.on { color:var(--petroleo); border-color:var(--petroleo); } .chip.off { color:var(--verde2); border-color:var(--verde2); }
-  .ramo.sub { margin-left:16px; }
+  .grade { display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:10px; align-items:start; }
   /* cartões */
   .bloco { display:flex; flex-direction:column; gap:10px; }
   .texto { background:var(--sup); border:1.5px solid var(--linha); border-radius:12px; padding:14px 18px; }
@@ -161,7 +162,9 @@ document.documentElement.setAttribute("title", ""); if (document.body) document.
   </header>
   
 
-  <section class="bloco" aria-labelledby="atdpuT"><h2 id="atdpuT"><span class="lg"><svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Unidade">
+  <section aria-labelledby="mapaT"><p class="rot" id="mapaT">Como os apps se organizam</p>
+    <div class="mapa">
+      <div class="fam"><h2><span class="lg"><svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Unidade">
 <path d="M14 6h20a4 4 0 0 1 4 4v8H10v-8a4 4 0 0 1 4-4z" fill="#00879a"/>
 <rect x="10" y="18" width="28" height="12" fill="#2f8a5a"/>
 <path d="M10 30h28v8a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4z" fill="#3f7f2a"/>
@@ -171,38 +174,27 @@ document.documentElement.setAttribute("title", ""); if (document.body) document.
 <path d="M21 42v-6.5a3 3 0 0 1 6 0V42z" fill="#fff"/>
 <path d="M4 42.5h40" stroke="#2f6a1f" stroke-width="3" stroke-linecap="round"/>
 </svg></span>Unidade</h2>
-    <article class="app online">
-      <div class="appTopo"><h3>Unidade online</h3><span class="ver">v0.8.2 · atualizado em 14/11/2026 às 08:50</span></div>
-      <p>Abre no navegador, sem baixar nada. Tem tudo do app e a Têmis, que responde dúvidas usando a sua conta do Claude. Aqui, os botões de imprimir baixam o PDF.</p>
-      <div class="acoes"><a class="bt pet" href="https://claude.ai/artifact/EknJTG4zKYxXFibcGHZSnV" target="_blank" rel="noopener">Abrir a versão online ↗</a><span class="tam">precisa entrar com uma conta do Claude</span></div>
-    </article>
-    <article class="app" data-k="atdpu">
-      <div class="appTopo"><h3>Unidade</h3><span class="ver">v0.8.2 · atualizado em 14/11/2026 às 08:50</span></div>
-      <p>O app completo, por setor: Agendamento, DAC, DPS, Aprender, Tutoriais e A unidade. Abertura de PAJ em 10 etapas, Meus PAJs, formulários, narrativas, modelos de peças e jurisprudências.</p>
-      <div class="acoes"><button type="button" class="bt cheio" data-baixar="atdpu">Baixar o app offline</button><span class="tam">57.7 MB · funciona sem internet</span></div>
-      <p class="msg" id="msg-atdpu" role="status"></p></article>
-  </section>
-
-  <section class="bloco" aria-labelledby="terreoT"><h2 id="terreoT"><span class="lg"><svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Térreo">
+        <p>O app principal, com todos os setores da unidade.</p>
+        <ul class="ramo">
+          <li><span class="chip on">online</span> no site do Claude, com a Têmis usando o Claude</li>
+          <li><span class="chip off">offline</span> arquivo para o computador, sem internet</li>
+          <li>Setores dentro dele:
+            <ul class="ramo sub"><li>Agendamento <small>documentos necessários e mensagem do agendamento</small></li><li>DAC <small>Assistente de abertura de PAJ, Meus PAJs, documentos faltantes, formulários, mensagens e narrativas</small></li><li>DPS <small>modelos de peças e jurisprudência</small></li><li>DAD <small>em breve</small></li><li>Tutoriais, Aprender, A DPU Pelotas e Apresentação</li></ul></li>
+        </ul></div>
+      <div class="fam"><h2><span class="lg"><svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Térreo">
 <rect x="10" y="6" width="28" height="36" rx="4" fill="none" stroke="#2f6a1f" stroke-width="3"/>
 <path d="M10 18h28M10 30h28" stroke="#2f6a1f" stroke-width="2" opacity=".45"/>
 <path d="M10 30h28v8a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4z" fill="#3f7f2a"/>
 <path d="M21 42v-6.5a3 3 0 0 1 6 0V42z" fill="#fff"/>
 <path d="M4 42.5h40" stroke="#00879a" stroke-width="3" stroke-linecap="round"/>
 </svg></span>Térreo</h2>
-    <article class="app" data-k="terreo">
-      <div class="appTopo"><h3>Térreo</h3><span class="ver">v0.3.3 · atualizado em 14/11/2026 às 08:50</span></div>
-      <p>Para os departamentos de atendimento, cartório e agendamento: documentos necessários e mensagem do agendamento, PAJ sem Atendimento, checklist de documentos, formulários e narrativas.</p>
-      <div class="acoes"><button type="button" class="bt cheio" data-baixar="terreo">Baixar o app offline</button><span class="tam">48.9 MB · funciona sem internet</span></div>
-      <p class="msg" id="msg-terreo" role="status"></p></article><article class="app" data-k="dac">
-      <div class="appTopo"><h3>Térreo – DAC</h3><span class="ver">v0.6.3 · atualizado em 14/11/2026 às 08:50</span></div>
-      <p>Só o atendimento e cartório: checklist de documentos faltantes, Central de Formulários com preenchimento e as narrativas.</p>
-      <div class="acoes"><button type="button" class="bt cheio" data-baixar="dac">Baixar o app offline</button><span class="tam">46.3 MB · funciona sem internet</span></div>
-      <p class="msg" id="msg-dac" role="status"></p></article><article class="app" data-k="ag">
-      <div class="appTopo"><h3>Térreo – AG</h3><span class="ver">v0.3.2 · atualizado em 14/11/2026 às 08:50</span></div>
-      <p>Só o agendamento: lista de documentos necessários, mensagem do agendamento para o WhatsApp e PAJ sem Atendimento.</p>
-      <div class="acoes"><button type="button" class="bt cheio" data-baixar="ag">Baixar o app offline</button><span class="tam">38.6 MB · funciona sem internet</span></div>
-      <p class="msg" id="msg-ag" role="status"></p></article>
+        <p>Derivado do Unidade, só para atendimento, cartório e agendamento <span class="chip off">offline</span></p>
+        <ul class="ramo">
+          <li>Térreo – DAC <span class="chip off">offline</span><small>só atendimento e cartório: documentos faltantes, formulários e narrativas</small></li>
+          <li>Térreo – AG <span class="chip off">offline</span><small>só agendamento: documentos necessários, mensagem do WhatsApp e PAJ sem atendimento</small></li>
+        </ul>
+        <p style="margin-top:8px">As ferramentas são as mesmas do Unidade: cada app abre só o que o setor precisa.</p></div>
+    </div>
   </section>
 
   <section class="bloco" aria-labelledby="sobreT"><h2 id="sobreT">Sobre o app</h2>
@@ -240,6 +232,52 @@ document.documentElement.setAttribute("title", ""); if (document.body) document.
       <li>Se persistir, avise o Pedro dizendo o app, a versão e o que apareceu na tela (sem dados de assistido).</li></ul></details>
     <details class="q"><summary>E a privacidade dos assistidos?</summary><p>Os apps não guardam documentos de assistidos e não têm internet na versão offline. Exemplos e textos são sem dados reais. Mesmo assim, o cuidado de sempre vale: digite só o necessário e não compartilhe a tela com dados do assistido. Na versão online, a Têmis e a análise usam o Claude, e a qualificação do assistido nunca é enviada.</p></details>
     <details class="q"><summary>Posso passar o app para um colega?</summary><p>Pode: é um arquivo só. Mande por WhatsApp, e-mail ou pendrive, ou indique este endereço. O crédito "Desenvolvido por Pedro Tomkowski" tem de continuar visível.</p></details>
+  </section>
+
+  <section class="bloco" aria-labelledby="atdpuT"><h2 id="atdpuT"><span class="lg"><svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Unidade">
+<path d="M14 6h20a4 4 0 0 1 4 4v8H10v-8a4 4 0 0 1 4-4z" fill="#00879a"/>
+<rect x="10" y="18" width="28" height="12" fill="#2f8a5a"/>
+<path d="M10 30h28v8a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4z" fill="#3f7f2a"/>
+<rect x="10" y="6" width="28" height="36" rx="4" fill="none" stroke="#2f6a1f" stroke-width="3"/>
+<path d="M10 18h28M10 30h28" stroke="#fff" stroke-width="1.6" opacity=".8"/>
+<path d="M15 10.5h4v4h-4zM22 10.5h4v4h-4zM29 10.5h4v4h-4zM15 22h4v4h-4zM22 22h4v4h-4zM29 22h4v4h-4z" fill="#fff" opacity=".9"/>
+<path d="M21 42v-6.5a3 3 0 0 1 6 0V42z" fill="#fff"/>
+<path d="M4 42.5h40" stroke="#2f6a1f" stroke-width="3" stroke-linecap="round"/>
+</svg></span>Baixar o Unidade</h2>
+    <div class="grade">
+    <article class="app online">
+      <div class="appTopo"><h3>Unidade online</h3><span class="ver">v0.8.2 · atualizado em 14/11/2026 às 08:50</span></div>
+      <p>Abre no navegador, sem baixar nada. Tem tudo do app e a Têmis, que responde dúvidas usando a sua conta do Claude. Aqui, os botões de imprimir baixam o PDF.</p>
+      <div class="acoes"><a class="bt pet" href="https://claude.ai/artifact/EknJTG4zKYxXFibcGHZSnV" target="_blank" rel="noopener">Abrir a versão online ↗</a><span class="tam">precisa entrar com uma conta do Claude</span></div>
+    </article>
+    <article class="app" data-k="atdpu">
+      <div class="appTopo"><h3>Unidade</h3><span class="ver">v0.8.2 · atualizado em 14/11/2026 às 08:50</span></div>
+      <p>O app completo, por setor: Agendamento, DAC, DPS, Aprender, Tutoriais e A unidade. Abertura de PAJ em 10 etapas, Meus PAJs, formulários, narrativas, modelos de peças e jurisprudências.</p>
+      <div class="acoes"><button type="button" class="bt cheio" data-baixar="atdpu">Baixar o app offline</button><span class="tam">57.7 MB · funciona sem internet</span></div>
+      <p class="msg" id="msg-atdpu" role="status"></p></article>
+    </div>
+  </section>
+
+  <section class="bloco" aria-labelledby="terreoT"><h2 id="terreoT"><span class="lg"><svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Térreo">
+<rect x="10" y="6" width="28" height="36" rx="4" fill="none" stroke="#2f6a1f" stroke-width="3"/>
+<path d="M10 18h28M10 30h28" stroke="#2f6a1f" stroke-width="2" opacity=".45"/>
+<path d="M10 30h28v8a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4z" fill="#3f7f2a"/>
+<path d="M21 42v-6.5a3 3 0 0 1 6 0V42z" fill="#fff"/>
+<path d="M4 42.5h40" stroke="#00879a" stroke-width="3" stroke-linecap="round"/>
+</svg></span>Baixar o Térreo</h2>
+    <div class="grade"><article class="app" data-k="terreo">
+      <div class="appTopo"><h3>Térreo</h3><span class="ver">v0.3.3 · atualizado em 14/11/2026 às 08:50</span></div>
+      <p>Para os departamentos de atendimento, cartório e agendamento: documentos necessários e mensagem do agendamento, PAJ sem Atendimento, checklist de documentos, formulários e narrativas.</p>
+      <div class="acoes"><button type="button" class="bt cheio" data-baixar="terreo">Baixar o app offline</button><span class="tam">48.9 MB · funciona sem internet</span></div>
+      <p class="msg" id="msg-terreo" role="status"></p></article><article class="app" data-k="dac">
+      <div class="appTopo"><h3>Térreo – DAC</h3><span class="ver">v0.6.3 · atualizado em 14/11/2026 às 08:50</span></div>
+      <p>Só o atendimento e cartório: checklist de documentos faltantes, Central de Formulários com preenchimento e as narrativas.</p>
+      <div class="acoes"><button type="button" class="bt cheio" data-baixar="dac">Baixar o app offline</button><span class="tam">46.3 MB · funciona sem internet</span></div>
+      <p class="msg" id="msg-dac" role="status"></p></article><article class="app" data-k="ag">
+      <div class="appTopo"><h3>Térreo – AG</h3><span class="ver">v0.3.2 · atualizado em 14/11/2026 às 08:50</span></div>
+      <p>Só o agendamento: lista de documentos necessários, mensagem do agendamento para o WhatsApp e PAJ sem Atendimento.</p>
+      <div class="acoes"><button type="button" class="bt cheio" data-baixar="ag">Baixar o app offline</button><span class="tam">38.6 MB · funciona sem internet</span></div>
+      <p class="msg" id="msg-ag" role="status"></p></article></div>
   </section>
 
   <section class="bloco apresHub" aria-labelledby="apT"><h2 id="apT">Apresentações</h2>
