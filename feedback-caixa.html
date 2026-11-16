@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Caixa de Feedback – Ecossistema Unidade</title>
+<style>
+  :root { --bg:#eef1ec; --sup:#fff; --tinta:#1e241c; --cinza:#5b6457; --linha:#d3dfcc; --verde:#2f6a1f; --verde2:#3f7f2a; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#121611; --sup:#1b2119; --tinta:#e6ede2; --cinza:#a6b19f; --linha:#2f3a2b; --verde:#8fcf6e; --verde2:#5fa83f; } }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--tinta); font-family:"Segoe UI", Calibri, Arial, sans-serif; }
+  .panel { max-width:720px; margin:40px auto; background:var(--sup); border-radius:14px; padding:24px 26px; box-shadow:0 2px 10px rgba(0,0,0,.1); }
+  h1 { color:var(--verde); font-size:21px; margin:0 0 6px; }
+  p.sub { color:var(--cinza); font-size:14px; line-height:1.5; }
+  input[type=password] { font:inherit; font-size:15px; width:100%; padding:9px 11px; border:1.5px solid var(--linha); border-radius:8px; background:var(--bg); color:var(--tinta); }
+  button { font:inherit; font-weight:700; font-size:15px; padding:10px 16px; border-radius:8px; border:1.5px solid var(--verde); background:var(--verde); color:#fff; cursor:pointer; margin-top:10px; }
+  pre { white-space:pre-wrap; word-break:break-word; background:var(--bg); border:1.5px solid var(--linha); border-radius:10px; padding:14px; font-size:13.5px; line-height:1.5; }
+  .er { color:#9c2f22; font-weight:700; font-size:14px; }
+  .ok { color:var(--verde2); font-weight:700; font-size:14px; }
+  .aviso { color:#5a3a00; background:#fff8de; padding:9px 12px; border-radius:8px; font-size:13px; margin:10px 0; line-height:1.45; }
+  @media (prefers-color-scheme: dark) { .aviso { background:#2a2208; color:#e8d690; } }
+</style>
+</head>
+<body>
+<div class="panel">
+  <h1>Caixa de Feedback</h1>
+  <p class="sub">Página só do Pedro, para ler o feedback que alguém gerou no app (botão "Gerar link para o Pedro") sem precisar de e-mail. O link em si já guarda o texto (depois do <code>#</code>, que nunca é enviado para nenhum servidor); esta senha só evita que alguém que ache o endereço leia por acaso.</p>
+  <div class="aviso">Isto <b>não é uma senha de verdade</b> (é só um código no próprio arquivo da página, qualquer um que souber ler conseguiria passar). Não é diferente de quem já tem o link conseguir ler o texto: só não aparece sem digitar o código.</div>
+  <div id="login">
+    <input type="password" id="senha" placeholder="Código" autocomplete="off">
+    <button type="button" id="entrar">Ver feedback</button>
+    <div id="msgLogin"></div>
+  </div>
+  <div id="conteudo" style="display:none">
+    <div id="msgConteudo"></div>
+    <pre id="texto"></pre>
+    <button type="button" class="ghost" id="bCopiar" style="background:#fff;color:var(--verde)">Copiar texto</button>
+  </div>
+</div>
+<script>
+/* código simples (não é segurança real): hash SHA-256 de "DPUpelotas2026" em hex, trocável pelo Pedro editando este arquivo */
+const HASH_ESPERADO = "9d3b1c17543ebe0693291b812a19a67f2e7c3af347a75a4a3372383944cc5788";
+async function sha256(t) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+}
+async function tentar() {
+  const s = document.getElementById("senha").value;
+  if (!s) return;
+  const h = await sha256(s);
+  if (h === HASH_ESPERADO) { mostrar(); }
+  else { document.getElementById("msgLogin").className = "er"; document.getElementById("msgLogin").textContent = "Código errado."; }
+}
+document.getElementById("entrar").onclick = tentar;
+document.getElementById("senha").addEventListener("keydown", e => { if (e.key === "Enter") tentar(); });
+function mostrar() {
+  document.getElementById("login").style.display = "none";
+  const box = document.getElementById("conteudo"), msg = document.getElementById("msgConteudo"), pre = document.getElementById("texto");
+  box.style.display = "";
+  const frag = location.hash.slice(1);
+  if (!frag) { msg.className = "er"; msg.textContent = "Nenhum feedback neste link. Abra o link específico que a pessoa gerou no app (ele traz o texto depois do #)."; return; }
+  try {
+    const txt = decodeURIComponent(escape(atob(frag)));
+    pre.textContent = txt; msg.className = "ok"; msg.textContent = "Feedback deste link:";
+  } catch (e) { msg.className = "er"; msg.textContent = "Não consegui ler o link (pode estar incompleto ou cortado ao copiar)."; }
+}
+document.getElementById("bCopiar").onclick = () => {
+  const t = document.getElementById("texto").textContent, ta = document.createElement("textarea");
+  ta.value = t; document.body.appendChild(ta); ta.select();
+  try { document.execCommand("copy"); } catch (e) {} ta.remove();
+  document.getElementById("msgConteudo").textContent = "Copiado.";
+};
+</script>
+</body>
+</html>
